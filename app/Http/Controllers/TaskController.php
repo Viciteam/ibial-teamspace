@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Services\Task\InjectTaskService;
 use App\Http\Services\Task\EditTaskService;
 use App\Http\Services\Task\DeleteTaskService;
+use App\Http\Services\Task\DetailsService;
 
 class TaskController extends Controller
 {
@@ -35,6 +36,14 @@ class TaskController extends Controller
     // delete team details
     public function delete(
         DeleteTaskService $task,
+        $id
+    )
+    {
+        return $task->handle($id);
+    }
+
+    public function details(
+        DetailsService $task,
         $id
     )
     {

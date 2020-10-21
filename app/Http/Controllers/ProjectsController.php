@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Services\Projects\InjectProjectsService;
 use App\Http\Services\Projects\EditProjectsService;
 use App\Http\Services\Projects\DeleteProjectsService;
+use App\Http\Services\Projects\DetailsService;
 use App\Http\Services\Projects\GetTeamsService;
+use App\Http\Services\Projects\GetTasksService;
 
 class ProjectsController extends Controller
 {
@@ -42,13 +44,30 @@ class ProjectsController extends Controller
         return $project->handle($id);
     }
 
-    // delete team details
-    public function teams(
-        GetTeamsService $project,
+    public function details(
+        DetailsService $details,
         $id
     )
     {
-        return $project->handle($id);
+        return $details->handle($id);
+    }
+
+    // 
+    public function teams(
+        GetTeamsService $teams,
+        $id
+    )
+    {
+        return $teams->handle($id);
+    }
+
+    // 
+    public function task(
+        GetTasksService $tasks,
+        $id
+    )
+    {
+        return $tasks->handle($id);
     }
 
 }

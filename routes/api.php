@@ -76,7 +76,9 @@ Route::group([
 
     Route::delete("/{id}", 'ProjectsController@delete');
 
+    Route::get("/{id}", 'ProjectsController@details');
     Route::get("/{id}/teams", 'ProjectsController@teams');
+    Route::get("/{id}/task", 'ProjectsController@task');
 
     
 });
@@ -88,6 +90,8 @@ Route::group([
     // setters
     Route::post("/", 'TaskController@inject');
     Route::post("/{id}", 'TaskController@edit');
+
+    Route::get("/{id}", 'TaskController@details');
 
     Route::delete("/{id}", 'TaskController@delete');
 });

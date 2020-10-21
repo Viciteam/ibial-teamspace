@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Models\ProjectsModel;
 use App\Models\MembersModel;
 use App\Models\TeamsModel;
+use App\Models\TasksModel;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class ProjectsRepository extends BaseRepository
     private $projects_model;
     private $member;
     private $teams;
+    private $task;
 
     /**
      * PropertyRepository constructor.
@@ -33,11 +35,13 @@ class ProjectsRepository extends BaseRepository
     public function __construct(
         ProjectsModel $projectsModel,
         TeamsModel $teamssModel,
+        TasksModel $tasksModel,
         MembersModel $memberModel
     ){
         $this->projects_model = $projectsModel;
         $this->teams = $teamssModel;
         $this->member = $memberModel;
+        $this->task = $tasksModel;
     }
 
     public function create($data)
@@ -144,6 +148,25 @@ class ProjectsRepository extends BaseRepository
         ];
     }
 
+    public function details($id)
+    {
+        $projects = $this->projects_model->find($id);
+
+        if (!$projects) {
+            return [
+                'status' => 400,
+                'message' => 'Project Details not found',
+                'data' => [],
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully deleted the Projects.',
+            'data' => $projects->toArray(),
+        ];
+    }
+
     public function teams($id)
     {
         // get teams as per project
@@ -179,5 +202,23 @@ class ProjectsRepository extends BaseRepository
         ];
     }
     
+    public function task($id)
+    {
+        $teams_list = $this->returnToArray($this->task->where("task_project", "=", $id)->get());
+
+        if(empty($teams_list)){
+            return [
+                'status' => 400,
+                'message' => 'Project has no task yet',
+                'data' => [],
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully return teams from Projects.',
+            'data' => $teams_list,
+        ];
+    }
     
 }

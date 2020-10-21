@@ -135,6 +135,25 @@ class TasksRepository extends BaseRepository
             'data' => [],
         ];
     }
+
+    public function details($id)
+    {
+        $tasks = $this->tasks_model->find($id);
+
+        if (!$tasks) {
+            return [
+                'status' => 400,
+                'message' => 'Task Details not found',
+                'data' => [],
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully pulled the Task.',
+            'data' => $tasks->toArray(),
+        ];
+    }
     
     
 }
