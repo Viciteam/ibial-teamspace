@@ -10,6 +10,8 @@ use App\Http\Services\Teams\DeleteTeamsService;
 use App\Http\Services\Teams\AddMemberService;
 use App\Http\Services\Teams\RemoveMemberService;
 use App\Http\Services\Teams\TeamDetailsService;
+use App\Http\Services\Teams\GetMembersService;
+use App\Http\Services\Teams\InviteByEmailService;
 
 class teamsController extends Controller
 {
@@ -94,6 +96,23 @@ class teamsController extends Controller
     )
     {
         return $team->handle($id);
+    }
+
+    public function getMembers(
+        GetMembersService $teamMembers,
+        $team_id
+    )
+    {
+        return $teamMembers->handle($team_id);
+    }
+
+    public function inviteByEmail(
+        Request $request,
+        InviteByEmailService $byemail
+    )
+    {
+        $data = $request->all();
+        return $byemail->handle($data);
     }
 
 }

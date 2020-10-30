@@ -129,6 +129,46 @@ class MembersRepository extends BaseRepository
 
         return [];
     }
+
+    public function teamMembers($team_id)
+    {
+        $getMember = $this->returnToArray($this->members->where("team_id", "=", $team_id)->get());
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully fetched the Member.',
+            'data' => $getMember,
+        ];
+    }
     
+    public function inviteByEmail($data)
+    {
+        foreach ($data['emails'] as $key => $value) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,"https://mail.ibial.com/api/sendemail");
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, [
+                "hasattachment" => "no",
+                "email_body" => 'Good Day!<br /><br />You have been invited to participate in a team collaboration.<br /><a href="https://dev.ibial.com/invite/?team='.$data['team_id'].'&email='.$value.'">Click here</a> to particiapte<br /><br />Cheers!',
+                "recipientemail" => $value,
+                "recipientname" => "Arphie Balboa",
+                "senderemail" => "teams@ibial.email",
+                "sendername" => "Ibial Team",
+                "subject" => "Team Invitation",
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $server_output = curl_exec($ch);
+
+            curl_close ($ch);
+
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully sent the invitations.',
+            'data' => [],
+        ];
+    }
     
 }

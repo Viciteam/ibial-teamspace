@@ -17,6 +17,7 @@ class CreateTeamsTable extends Migration
             $table->id();
             $table->string('team_name');
             $table->longText('team_desc');
+            $table->integer('bussines_id');
             $table->timestamps();
         });
     }

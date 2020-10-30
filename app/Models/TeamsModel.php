@@ -17,7 +17,8 @@ class TeamsModel extends BaseModel
 
     protected $fillable = [
         'team_name',
-        'team_desc'
+        'team_desc',
+        'bussines_id'
     ];
 
     public $hidden = [];
@@ -25,6 +26,7 @@ class TeamsModel extends BaseModel
     public $rules = [
         'team_name' => 'sometimes|required',
         'team_desc' => 'sometimes|required',
+        'bussines_id' => 'sometimes|required',
     ];
 
     public function transactions()

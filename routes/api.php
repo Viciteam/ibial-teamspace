@@ -43,7 +43,6 @@ Route::group([
     /**
      * Get Team Details
      */
-
     Route::get("/{id}", 'teamsController@getTeam');
     
     /**
@@ -62,6 +61,16 @@ Route::group([
          * remove Member on Team
          */
         Route::post("remove/{member_id}", 'teamsController@removeMember');
+
+        /**
+         * Get Team Members
+         */
+        Route::get("/{team_id}", 'teamsController@getMembers');
+
+        /**
+         * Invite Members by email
+         */
+        Route::post("/add/email", 'teamsController@inviteByEmail');
     });
 
 });
