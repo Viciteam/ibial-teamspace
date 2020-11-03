@@ -24,7 +24,7 @@ class DetailsService extends BaseService
     public function handle($id)
     {   
         $updated_project = $this->projects->details($id);
-        return $updated_project;
+        return $this->absorb($updated_project);
     }
 
 }

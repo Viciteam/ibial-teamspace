@@ -34,6 +34,7 @@ class TeamsRepository extends BaseRepository
 
     public function create($data)
     {
+        $data['bussines_id'] = $data['project_id'];
 
         $teams = $this->teams_model->init($data);
 

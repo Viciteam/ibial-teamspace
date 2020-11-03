@@ -26,7 +26,7 @@ class InjectProjectsService extends BaseService
     public function handle(array $data)
     {   
         $inject_project = $this->projects->create($data);
-        return $inject_project;
+        return $this->absorb($inject_project);
     }
 
 }

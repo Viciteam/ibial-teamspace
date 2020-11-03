@@ -167,44 +167,96 @@ class ProjectsRepository extends BaseRepository
         ];
     }
 
-    public function teams($id)
+    public function teams($data)
     {
+        $id = $data['team_id'];
+
+        // check if limit and page
+        if(isset($data['limit']) || isset($data['page'])){
+            if((!isset($data['limit']) || $data['limit'] == "") || (!isset($data['page']) || $data['page'] == "")){
+                return [
+                    'status' => 500,
+                    'message' => 'Missing Limit or Page parameter',
+                    'data' => [],
+                ];
+            }
+        }
+
+        // initialize model
+        $project_info = $this->teams->where("bussines_id", "=", $id);
+
+        if(isset($data['limit']) && isset($data['page'])){
+            // for max pagination
+            $for_pagination = $project_info->get()->count();
+
+            // get max number of pages
+            $max_pags = $for_pagination / $data['limit'];
+
+            // get skip value
+            $skip = ($data['page'] == "1" ? 0 : ($data['page'] == "2" ? $data['limit'] : $data['limit'] * ($data['page'] - 1)));
+            $project_info = $project_info->skip($skip)->take($data['limit'])->get();
+        } else {
+            $project_info = $project_info->get();
+        }
+
+        // $project_info = $project_info->get();
+        
         // get teams as per project
-        $project_member_list = $this->returnToArray($this->member->where("project_id", "=", $id)->get());
+        $project_member_list = $this->returnToArray($project_info); 
 
         if(empty($project_member_list)){
             return [
                 'status' => 400,
-                'message' => 'Project has no teams yet',
+                'message' => 'no more teams',
                 'data' => [],
             ];
-        }
-
-        // get teams from members list
-        $teams = [];
-        foreach ($project_member_list as $pmlkey => $pmlvalue) {
-            array_push($teams, $pmlvalue['team_id']);
-        }
-        $teams = array_unique($teams);
-
-
-        // get team details
-        $team_details = [];
-        foreach ($teams as $tkey => $tvalue) {
-            $team_detail = $this->returnToArray($this->teams->where("id", "=", $tvalue)->first());
-            array_push($team_details, $team_detail);
         }
 
         return [
             'status' => 200,
             'message' => 'Successfully return teams from Projects.',
-            'data' => $team_details,
+            'meta' => [
+                'max_pages' => ceil($max_pags)
+            ],
+            'data' => $project_member_list,
         ];
     }
     
-    public function task($id)
+    public function task($data)
     {
-        $teams_list = $this->returnToArray($this->task->where("task_project", "=", $id)->get());
+        $id = $data['task_id'];
+
+        // limit must be paired with page
+        if(isset($data['limit']) || isset($data['page'])){
+            if((!isset($data['limit']) || $data['limit'] == "") || (!isset($data['page']) || $data['page'] == "")){
+                return [
+                    'status' => 500,
+                    'message' => 'Missing Limit or Page parameter',
+                    'data' => [],
+                ];
+            }
+        }
+
+        // init model
+        $team_info = $this->task->where("task_project", "=", $id);
+
+        // query data
+        if(isset($data['limit']) && isset($data['page'])){
+            // for max pagination
+            $for_pagination = $team_info->get()->count();
+
+            // get max number of pages
+            $max_pags = $for_pagination / $data['limit'];
+
+            // get skip value
+            $skip = ($data['page'] == "1" ? 0 : ($data['page'] == "2" ? $data['limit'] : $data['limit'] * ($data['page'] - 1)));
+            $team_info = $team_info->skip($skip)->take($data['limit'])->get();
+        } else {
+            $team_info = $team_info->get();
+        }
+        
+        // convert to array
+        $teams_list = $this->returnToArray($team_info);
 
         if(empty($teams_list)){
             return [
@@ -217,6 +269,9 @@ class ProjectsRepository extends BaseRepository
         return [
             'status' => 200,
             'message' => 'Successfully return teams from Projects.',
+            'meta' => [
+                'max_pages' => ceil($max_pags)
+            ],
             'data' => $teams_list,
         ];
     }

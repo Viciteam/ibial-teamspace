@@ -26,7 +26,7 @@ class InjectTeamsService extends BaseService
     public function handle(array $data)
     {   
         $injected_data = $this->teams->create($data);
-        return $injected_data;
+        return $this->absorb($injected_data);
     }
 
 }

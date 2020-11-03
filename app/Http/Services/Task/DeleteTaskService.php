@@ -26,7 +26,7 @@ class DeleteTaskService extends BaseService
     public function handle($id)
     {   
         $delete_task = $this->task->detele($id);
-        return $delete_task;
+        return $this->absorb($delete_task);
     }
 
 }

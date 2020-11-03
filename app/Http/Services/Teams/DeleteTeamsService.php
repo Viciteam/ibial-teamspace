@@ -26,7 +26,7 @@ class DeleteTeamsService extends BaseService
     public function handle($id)
     {   
         $delete_teams = $this->teams->detele($id);
-        return $delete_teams;
+        return $this->absorb($delete_teams);
     }
 
 }

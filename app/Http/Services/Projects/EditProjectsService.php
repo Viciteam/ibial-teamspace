@@ -26,7 +26,7 @@ class EditProjectsService extends BaseService
     public function handle(array $data)
     {   
         $updated_project = $this->projects->edit($data);
-        return $updated_project;
+        return $this->absorb($updated_project);
     }
 
 }

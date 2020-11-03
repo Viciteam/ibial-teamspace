@@ -26,7 +26,7 @@ class DetailsService extends BaseService
     public function handle($id)
     {   
         $delete_task = $this->task->details($id);
-        return $delete_task;
+        return $this->absorb($delete_task);
     }
 
 }

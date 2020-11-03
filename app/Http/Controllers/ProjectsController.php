@@ -55,19 +55,25 @@ class ProjectsController extends Controller
     // 
     public function teams(
         GetTeamsService $teams,
-        $id
+        $id,
+        Request $request
     )
     {
-        return $teams->handle($id);
+        $data = $request->all();
+        $data['team_id'] = $id;
+        return $teams->handle($data);
     }
 
     // 
     public function task(
         GetTasksService $tasks,
-        $id
+        $id,
+        Request $request
     )
     {
-        return $tasks->handle($id);
+        $data = $request->all();
+        $data['task_id'] = $id;
+        return $tasks->handle($data);
     }
 
 }

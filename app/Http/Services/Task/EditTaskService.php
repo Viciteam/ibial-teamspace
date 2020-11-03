@@ -26,7 +26,7 @@ class EditTaskService extends BaseService
     public function handle(array $data)
     {   
         $updated_task = $this->task->edit($data);
-        return $updated_task;
+        return $this->absorb($updated_task);
     }
 
 }

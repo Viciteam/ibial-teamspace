@@ -130,13 +130,52 @@ class MembersRepository extends BaseRepository
         return [];
     }
 
-    public function teamMembers($team_id)
+    public function teamMembers($data)
     {
-        $getMember = $this->returnToArray($this->members->where("team_id", "=", $team_id)->get());
+        $team_id = $data['team_id'];
+
+        // limit must be paired with page
+        if(isset($data['limit']) || isset($data['page'])){
+            if((!isset($data['limit']) || $data['limit'] == "") || (!isset($data['page']) || $data['page'] == "")){
+                return [
+                    'status' => 500,
+                    'message' => 'Missing Limit or Page parameter',
+                    'data' => [],
+                ];
+            }
+        }
+
+        // init model
+        $team_members = $this->members->where("team_id", "=", $team_id);
+
+        
+        
+        // query data
+        if(isset($data['limit']) && isset($data['page'])){
+            // for max pagination
+            $for_pagination = $team_members->get()->count();
+
+            // get max number of pages
+            $max_pags = $for_pagination / $data['limit'];
+
+            // get skip value
+            $skip = ($data['page'] == "1" ? 0 : ($data['page'] == "2" ? $data['limit'] : $data['limit'] * ($data['page'] - 1)));
+            $team_members = $team_members->skip($skip)->take($data['limit'])->get();
+
+            
+            
+        } else {
+            $team_members = $team_members->get();
+        }
+        
+        $getMember = $this->returnToArray($team_members);
 
         return [
             'status' => 200,
             'message' => 'Successfully fetched the Member.',
+            'meta' => [
+                'max_pages' => ceil($max_pags)
+            ],
             'data' => $getMember,
         ];
     }

@@ -26,7 +26,7 @@ class InjectTaskService extends BaseService
     public function handle(array $data)
     {   
         $inject_tasks = $this->task->create($data);
-        return $inject_tasks;
+        return $this->absorb($inject_tasks);
     }
 
 }

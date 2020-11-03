@@ -29,15 +29,15 @@ class AddMemberService extends BaseService
         $ifExist = $this->members->ifUserExist($data);
 
         if(!empty($ifExist)){
-            return [
+            return $this->absorb([
                 'status' => 500,
                 'message' => 'User is already a Member of the team',
                 'data' => $ifExist,
-            ];
+            ]);
         }
 
         $injected_data = $this->members->create($data);
-        return $injected_data;
+        return $this->absorb($injected_data);
     }
 
 }

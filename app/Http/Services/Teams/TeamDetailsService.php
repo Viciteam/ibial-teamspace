@@ -26,7 +26,7 @@ class TeamDetailsService extends BaseService
     public function handle($id)
     {   
         $updated_teams = $this->teams->details($id);
-        return $updated_teams;
+        return $this->absorb($updated_teams);
     }
 
 }

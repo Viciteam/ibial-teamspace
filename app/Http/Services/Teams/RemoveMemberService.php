@@ -26,7 +26,7 @@ class RemoveMemberService extends BaseService
     public function handle($id)
     {   
         $injected_data = $this->members->detele($id);
-        return $injected_data;
+        return $this->absorb($injected_data);
     }
 
 }

@@ -26,7 +26,7 @@ class DeleteProjectsService extends BaseService
     public function handle($id)
     {   
         $delete_projects = $this->projects->detele($id);
-        return $delete_projects;
+        return $this->absorb($delete_projects);
     }
 
 }

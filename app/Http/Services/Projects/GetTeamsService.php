@@ -23,10 +23,10 @@ class GetTeamsService extends BaseService
      *
      * @return void
      */
-    public function handle($id)
+    public function handle(array $data)
     {   
-        $updated_project = $this->projects->teams($id);
-        return $updated_project;
+        $updated_project = $this->projects->teams($data);
+        return $this->absorb($updated_project);
     }
 
 }

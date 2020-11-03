@@ -23,10 +23,10 @@ class GetTasksService extends BaseService
      *
      * @return void
      */
-    public function handle($id)
+    public function handle(array $data)
     {   
-        $updated_project = $this->projects->task($id);
-        return $updated_project;
+        $updated_project = $this->projects->task($data);
+        return $this->absorb($updated_project);
     }
 
 }

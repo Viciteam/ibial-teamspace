@@ -26,7 +26,7 @@ class InjectMessageHistoryService extends BaseService
     public function handle(array $data)
     {   
         $inject_message_history = $this->history->create($data);
-        return $inject_message_history;
+        return $this->absorb($inject_message_history);
     }
 
 }

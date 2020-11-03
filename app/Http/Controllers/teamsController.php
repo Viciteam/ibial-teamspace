@@ -100,10 +100,13 @@ class teamsController extends Controller
 
     public function getMembers(
         GetMembersService $teamMembers,
-        $team_id
+        $team_id,
+        Request $request
     )
     {
-        return $teamMembers->handle($team_id);
+        $data = $request->all();
+        $data['team_id'] = $team_id;
+        return $teamMembers->handle($data);
     }
 
     public function inviteByEmail(

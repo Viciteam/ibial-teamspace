@@ -26,7 +26,7 @@ class EditTeamsService extends BaseService
     public function handle(array $data)
     {   
         $updated_teams = $this->teams->edit($data);
-        return $updated_teams;
+        return $this->absorb($updated_teams);
     }
 
 }
